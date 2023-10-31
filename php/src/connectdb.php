@@ -39,13 +39,27 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         echo "ระบุตารางที่ต้องการดึงข้อมูลด้วยพารามิเตอร์ 'table'";
     }
     
+// } elseif ($_SERVER["REQUEST_METHOD"] === "DELETE") {
+//     // ตรวจสอบการลบข้อมูลจากตารางที่คุณต้องการ
+//     if (isset($_GET["table"]) && isset($_GET["CustomerID"])) {
+//         $table = $_GET["table"];
+//         $id = $_GET["CustomerID"];
+        
+//         $sql = "DELETE FROM " . $table . " WHERE CustomerID = " . $id;
+//         if ($conn->query($sql) === TRUE) {
+//             echo "รายการถูกลบเรียบร้อย";
+//         } else {
+//             echo "เกิดข้อผิดพลาดในการลบรายการ: " . $conn->error;
+//         }
+//     } else {
+//         echo "ระบุตารางและรหัสที่ต้องการลบด้วยพารามิเตอร์ 'table' และ 'CustomerID'";
+//     }
 } elseif ($_SERVER["REQUEST_METHOD"] === "DELETE") {
-    // ตรวจสอบการลบข้อมูลจากตารางที่คุณต้องการ
     if (isset($_GET["table"]) && isset($_GET["CustomerID"])) {
         $table = $_GET["table"];
-        $id = $_GET["CustomerID"];
-        
-        $sql = "DELETE FROM " . $table . " WHERE CustomerID = " . $id;
+        $customerIDs = $_GET["CustomerID"];
+
+        $sql = "DELETE FROM " . $table . " WHERE CustomerID IN (" . $customerIDs . ")";
         if ($conn->query($sql) === TRUE) {
             echo "รายการถูกลบเรียบร้อย";
         } else {
@@ -54,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     } else {
         echo "ระบุตารางและรหัสที่ต้องการลบด้วยพารามิเตอร์ 'table' และ 'CustomerID'";
     }
-    
 } elseif ($_SERVER["REQUEST_METHOD"] === "PUT") {
     // ตรวจสอบการแก้ไขข้อมูลจากตารางที่คุณต้องการ
     $put_vars = json_decode(file_get_contents("php://input"), true);
