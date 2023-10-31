@@ -1,0 +1,25 @@
+<!-- elseif  ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_GET["table"]) && !empty($_POST)) {
+    $table = $_GET["table"];
+
+    if (isset($_FILES['CustomerImage'])) {
+        $image_name = 'http://localhost:8080/img/' . $_FILES['CustomerImage']['name'];
+        $image_temp = $_FILES['CustomerImage']['tmp_name'];
+        
+        $target = '/var/www/html/img/' . $_FILES['CustomerImage']['name'];
+        move_uploaded_file($image_temp, $target);
+    }
+    else {
+        $image_name = 'http://localhost:8080/img/avatar.jpg'; // URL to default image if no image uploaded
+    }
+
+    // SQL Query for inserting data into the database
+    $sql = "INSERT INTO $table (CustomerName, CustomerEmail, ProjectName, Status, Weeks, Budget, Location, CustomerImage) VALUES ('$customerName', '$customerEmail', '$projectName', '$status', '$weeks', '$budget', '$location', '$image_name')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Customer data added successfully";
+    } else {
+        echo "Error adding customer data: " . $conn->error;
+    }
+} else {
+    echo "Please specify the table and data to be added with 'table' parameter and HTTP POST data";
+} -->

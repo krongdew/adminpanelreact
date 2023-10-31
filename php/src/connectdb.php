@@ -87,6 +87,45 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     } else {
         echo "ระบุตารางและรหัสที่ต้องการแก้ไขด้วยพารามิเตอร์ 'table' และ 'CustomerID'";
     }
+//สำหรับการเพิ่มข้อมูล
+// Check if the request method is POST and if it contains data
+// ...
+} elseif ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST)) {
+   
+        if (isset($_GET["table"])) {
+            $table = $_GET["table"];
+            // ดำเนินการดึงข้อมูลจากตารางที่คุณต้องการ
+    // สร้างตัวแปรเพื่อเก็บข้อมูลที่ถูกส่งมาจากฟอร์มผ่าน HTTP POST
+    $customerName = $_POST['CustomerName']; // ชื่อลูกค้า
+    $customerEmail = $_POST['CustomerEmail']; // อีเมลลูกค้า
+    $projectName = $_POST['ProjectName']; // ชื่อโครงการ
+    $status = $_POST['Status']; // สถานะ
+    $weeks = $_POST['Weeks']; // สัปดาห์
+    $budget = $_POST['Budget']; // งบประมาณ
+    $location = $_POST['Location']; // สถานที่
+
+    if (isset($_FILES['CustomerImage'])) {
+        $image_name = 'http://localhost:8080/img/' . $_FILES['CustomerImage']['name'];
+        $image_temp = $_FILES['CustomerImage']['tmp_name'];
+        
+        $target = '/var/www/html/img/' . $_FILES['CustomerImage']['name'];
+        move_uploaded_file($image_temp, $target);
+    }
+    else {
+        $image_name = 'http://localhost:8080/img/default.jpg'; // URL ของรูปภาพเริ่มต้นถ้าไม่มีรูปภาพถูกอัปโหลด
+    }
+
+    // SQL Query สำหรับการเพิ่มข้อมูลลงในฐานข้อมูล
+    $sql = "INSERT INTO $table (CustomerName, CustomerEmail, ProjectName, Status, Weeks, Budget, Location, CustomerImage) VALUES ('$customerName', '$customerEmail', '$projectName', '$status', '$weeks', '$budget', '$location', '$image_name')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "การเพิ่มข้อมูลลูกค้าเสร็จสมบูรณ์";
+    } else {
+        echo "เกิดข้อผิดพลาดในการเพิ่มข้อมูลลูกค้า: " . $conn->error;
+    }
+} else {
+    echo "กรุณาระบุตารางและข้อมูลที่ต้องการเพิ่มด้วยพารามิเตอร์ 'table' และ HTTP POST data";
+}
 }
 
 // ปิดการเชื่อมต่อ
